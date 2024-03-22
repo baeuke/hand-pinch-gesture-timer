@@ -115,11 +115,13 @@ def main():
                 pre_processed_landmark_list = pre_process_landmark(
                     landmark_list)
 
-                print("landmarks:", pre_processed_landmark_list)
+                # print("landmarks:", pre_processed_landmark_list)
 
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
                 if hand_sign_id == 0 and not pinch_recognized:
+                    print("\n")
                     print("Pinch Gesture Recognized!")
+                    print("\n")
                     pinch_recognized = True
 
 
