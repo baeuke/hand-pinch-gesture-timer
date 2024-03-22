@@ -103,9 +103,7 @@ def main():
         number, mode = select_mode(key, mode)
 
         # Camera capture #####################################################
-        ret, image = cap.read()
-        if not ret:
-            break
+
         image = cv.flip(image, 1)  # Mirror display
         debug_image = copy.deepcopy(image)
 
