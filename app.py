@@ -81,8 +81,7 @@ def main():
     mode = 0
 
 
-    # while True:
-    for frame in camera.capture_continuous(encoder='opencv'):
+    while True:
         image = camera.capture_array()
         fps = cvFpsCalc.get()
 
