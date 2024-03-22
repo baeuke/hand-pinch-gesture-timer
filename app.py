@@ -103,7 +103,7 @@ def main():
         results = hands.process(image)
         image.flags.writeable = True
 
-        print('results', results)
+        print('results', results.multi_hand_landmarks)
 
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
