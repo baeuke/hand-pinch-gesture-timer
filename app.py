@@ -93,7 +93,7 @@ def main():
 
         # Camera capture #####################################################
 
-        image = cv.flip(image, 1)  # Mirror display
+        # image = cv.flip(image, 1)  # Mirror display
         debug_image = copy.deepcopy(image)
 
         # Detection implementation #############################################################
