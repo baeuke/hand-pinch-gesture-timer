@@ -63,6 +63,7 @@ def main():
     camera = Picamera2()
     capture_config = camera.create_still_configuration()
     camera.configure(capture_config)
+    camera.start()
     print("aftter camera")
     # camera.resolution = (960, 540)
     # camera.start_preview(Preview.NULL)
@@ -90,9 +91,9 @@ def main():
 
     while True:
         print("inside true")
-        image = camera.capture_array()
+        image = camera.capture_array(format="bgr")
         print("image: ")
-        print(image)
+        # print(image)
         fps = cvFpsCalc.get()
 
         # Process Key (ESC: end) #################################################
