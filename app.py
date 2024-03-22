@@ -65,11 +65,7 @@ def main():
     camera.configure(capture_config)
     camera.start()
     print("aftter camera")
-    # camera.resolution = (960, 540)
-    # camera.start_preview(Preview.NULL)
-    # camera.resolution = (cap_width, cap_height)
-    # camera.framerate = 24
-    # rawCapture = PiRGBArray(camera, size=(cap_width, cap_height))
+
 
     # Model load #############################################################
     mp_hands = mp.solutions.hands
@@ -86,8 +82,6 @@ def main():
     # FPS Measurement ########################################################
     cvFpsCalc = CvFpsCalc(buffer_len=10)
 
-    mode = 0
-
 
     while True:
         print("inside true")
@@ -96,11 +90,6 @@ def main():
         # print(image)
         fps = cvFpsCalc.get()
 
-        # Process Key (ESC: end) #################################################
-        key = cv.waitKey(10)
-        if key == 27:  # ESC
-            break
-        number, mode = select_mode(key, mode)
 
         # Camera capture #####################################################
 
@@ -113,6 +102,8 @@ def main():
         image.flags.writeable = False
         results = hands.process(image)
         image.flags.writeable = True
+
+        print('results', results)
 
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
@@ -148,19 +139,6 @@ def main():
 
     # cap.release()
     # cv.destroyAllWindows()
-
-
-def select_mode(key, mode):
-    number = -1
-    if 48 <= key <= 57:  # 0 ~ 9
-        number = key - 48
-    if key == 110:  # n
-        mode = 0
-    if key == 107:  # k
-        mode = 1
-    if key == 104:  # h
-        mode = 2
-    return number, mode
 
 
 
