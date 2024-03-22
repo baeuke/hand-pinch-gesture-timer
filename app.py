@@ -22,6 +22,10 @@ GPIO.setup(SERVO_PIN, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_PIN, 50)
 pwm.start(12)
 
+def map_number(n, start1, stop1, start2, stop2):
+    return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
+
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -46,8 +50,7 @@ def get_args():
 
 print("before main")
 
-def map_number(n, start1, stop1, start2, stop2):
-    return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
+
 
 def main():
     print("inside main")
