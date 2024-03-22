@@ -6,6 +6,7 @@ from collections import deque
 
 from picamera2 import Picamera2, Preview
 
+import RPi.GPIO as GPIO
 
 import cv2 as cv
 import numpy as np
@@ -14,7 +15,12 @@ import mediapipe as mp
 from utils import CvFpsCalc
 from model import KeyPointClassifier
 
+SERVO_PIN = 12
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(SERVO_PIN, GPIO.OUT)
 
+pwm = GPIO.PWM(SERVO_PIN, 50)
+pwm.start(12)
 
 
 def get_args():
@@ -84,6 +90,8 @@ def main():
 
 
     while True:
+        # pwm.ChangeDutyCycle(3 - 12)
+
         print("inside true")
         image = camera.capture_array()
 
@@ -103,7 +111,7 @@ def main():
         results = hands.process(image)
         image.flags.writeable = True
 
-        # print('results', results.multi_hand_landmarks)
+
 
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
@@ -131,16 +139,12 @@ def main():
                 if hand_sign_id == 0 and pinch_recognized:
                     fingertip_y = landmark_list[8][1]
                     if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
+                        mapped_value = map_value(fingertip_y, 600, 1300, 3, 12)
+                        pwm.ChangeDutyCycle(mapped_value)
                         print("fingertip-y:", fingertip_y)
                         prev_fingertip_y = fingertip_y
 
 
-        # Screen reflection #############################################################
-        # cv.imshow('Hand Gesture Recognition', debug_image)
-        # rawCapture.truncate(0)
-
-    # cap.release()
-    # cv.destroyAllWindows()
 
 
 
