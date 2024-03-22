@@ -92,7 +92,7 @@ def main():
     while True:
         print("inside true")
         image = camera.capture_array()
-        print("image: ")
+
         # print(image)
         fps = cvFpsCalc.get()
 
@@ -123,6 +123,8 @@ def main():
                 # Conversion to relative coordinates / normalized coordinates
                 pre_processed_landmark_list = pre_process_landmark(
                     landmark_list)
+
+                print("landmarks:", pre_processed_landmark_list)
 
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
                 if hand_sign_id == 0 and not pinch_recognized:
