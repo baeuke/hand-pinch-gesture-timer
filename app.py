@@ -46,6 +46,9 @@ def get_args():
 
 print("before main")
 
+def map_number(n, start1, stop1, start2, stop2):
+    return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
+
 def main():
     print("inside main")
     pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
@@ -139,7 +142,7 @@ def main():
                 if hand_sign_id == 0 and pinch_recognized:
                     fingertip_y = landmark_list[8][1]
                     if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
-                        mapped_value = map_value(fingertip_y, 600, 1300, 3, 12)
+                        mapped_value = map_number(fingertip_y, 600, 1300, 3, 12)
                         pwm.ChangeDutyCycle(mapped_value)
                         print("fingertip-y:", fingertip_y)
                         prev_fingertip_y = fingertip_y
