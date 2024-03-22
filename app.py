@@ -59,8 +59,10 @@ def main():
 
     # Camera preparation ###############################################################
     camera = Picamera2()
-    camera.resolution = (cap_width, cap_height)
-    camera.framerate = 24
+    camera.resolution = (960, 540)
+    camera.start_preview(Preview.NULL)
+    # camera.resolution = (cap_width, cap_height)
+    # camera.framerate = 24
     # rawCapture = PiRGBArray(camera, size=(cap_width, cap_height))
 
     # Model load #############################################################
