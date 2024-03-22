@@ -5,7 +5,7 @@ from collections import Counter
 from collections import deque
 
 from picamera2 import Picamera2, Preview
-from picamera2.array import PiRGBArray
+
 
 import cv2 as cv
 import numpy as np
@@ -59,9 +59,9 @@ def main():
 
     # Camera preparation ###############################################################
     camera = Picamera2()
-    ccamera.resolution = (cap_width, cap_height)
+    camera.resolution = (cap_width, cap_height)
     camera.framerate = 24
-    rawCapture = PiRGBArray(camera, size=(cap_width, cap_height))
+    # rawCapture = PiRGBArray(camera, size=(cap_width, cap_height))
 
     # Model load #############################################################
     mp_hands = mp.solutions.hands
@@ -83,7 +83,7 @@ def main():
 
     # while True:
     for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-        image = frame.array
+        image = camera.capture_array()
         fps = cvFpsCalc.get()
 
         # Process Key (ESC: end) #################################################
