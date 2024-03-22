@@ -59,8 +59,10 @@ def main():
 
     # Camera preparation ###############################################################
     camera = Picamera2()
-    camera.resolution = (960, 540)
-    camera.start_preview(Preview.NULL)
+    capture_config = camera.create_still_configuration()
+    camera.configure(capture_config)
+    # camera.resolution = (960, 540)
+    # camera.start_preview(Preview.NULL)
     # camera.resolution = (cap_width, cap_height)
     # camera.framerate = 24
     # rawCapture = PiRGBArray(camera, size=(cap_width, cap_height))
@@ -97,7 +99,7 @@ def main():
         ret, image = cap.read()
         if not ret:
             break
-        # image = cv.flip(image, 1)  # Mirror display
+        image = cv.flip(image, 1)  # Mirror display
         debug_image = copy.deepcopy(image)
 
         # Detection implementation #############################################################
