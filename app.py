@@ -141,11 +141,11 @@ def main():
 
 
         # Screen reflection #############################################################
-        cv.imshow('Hand Gesture Recognition', debug_image)
+        # cv.imshow('Hand Gesture Recognition', debug_image)
         rawCapture.truncate(0)
 
     # cap.release()
-    cv.destroyAllWindows()
+    # cv.destroyAllWindows()
 
 
 def select_mode(key, mode):
