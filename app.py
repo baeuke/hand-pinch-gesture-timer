@@ -50,9 +50,9 @@ def main():
     # Argument parsing #################################################################
     args = get_args()
 
-    cap_device = args.device
-    cap_width = args.width
-    cap_height = args.height
+    # cap_device = args.device
+    # cap_width = args.width
+    # cap_height = args.height
 
     use_static_image_mode = args.use_static_image_mode
     min_detection_confidence = args.min_detection_confidence
