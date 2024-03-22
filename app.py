@@ -91,7 +91,7 @@ def main():
 
     while True:
         print("inside true")
-        image = camera.capture_array(format="bgr")
+        image = camera.capture_array()
         print("image: ")
         # print(image)
         fps = cvFpsCalc.get()
