@@ -38,8 +38,10 @@ def get_args():
 
     return args
 
+print("before main")
 
 def main():
+    print("inside main")
     pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
     pinch_up_detected = False
     prev_fingertip_y = float('inf') # setting initial val for fingertip's y coordinate to infinity (cuz the y grows from top to bottom)
@@ -61,6 +63,7 @@ def main():
     camera = Picamera2()
     capture_config = camera.create_still_configuration()
     camera.configure(capture_config)
+    print("aftter camera")
     # camera.resolution = (960, 540)
     # camera.start_preview(Preview.NULL)
     # camera.resolution = (cap_width, cap_height)
@@ -86,6 +89,7 @@ def main():
 
 
     while True:
+        print("inside true")
         image = camera.capture_array()
         fps = cvFpsCalc.get()
 
