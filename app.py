@@ -82,7 +82,7 @@ def main():
 
 
     # while True:
-    for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+    for frame in camera.capture_continuous(encoder='opencv'):
         image = camera.capture_array()
         fps = cvFpsCalc.get()
 
