@@ -6,8 +6,6 @@ from collections import deque
 
 from picamera2 import Picamera2, Preview
 
-import RPi.GPIO as GPIO
-
 import cv2 as cv
 import numpy as np
 import mediapipe as mp
@@ -15,12 +13,32 @@ import mediapipe as mp
 from utils import CvFpsCalc
 from model import KeyPointClassifier
 
-SERVO_PIN = 12
+#####STEPPER SETUP START######
+
+import time
+import board
+from adafruit_motor import stepper
+from adafruit_motorkit import MotorKit
+
+kit = MotorKit(i2c=board.I2C(), address=0x60)
+
+#####STEPPER SETUP END######
+
+
+#####SERVO-MOTOR SETUP START######
+
+import RPi.GPIO as GPIO
+
+SERVO_PIN = 21
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SERVO_PIN, GPIO.OUT)
 
 pwm = GPIO.PWM(SERVO_PIN, 50)
 pwm.start(12)
+
+#####SERVO-MOTOR SETUP END######
+
+
 
 def map_number(n, start1, stop1, start2, stop2):
     return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
