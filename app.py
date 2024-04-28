@@ -32,7 +32,7 @@ kit = MotorKit(i2c=board.I2C(), address=0x60)
 
 import RPi.GPIO as GPIO
 
-SERVO_PIN = 21
+SERVO_PIN = 12
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SERVO_PIN, GPIO.OUT)
 
