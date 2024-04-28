@@ -117,12 +117,11 @@ def main():
 
 
     while True:
-        # pwm.ChangeDutyCycle(3 - 12)
 
-        print("inside true")
+
+        # print("inside true")
         image = camera.capture_array()
 
-        # print('image:', image)
         fps = cvFpsCalc.get()
 
 
@@ -166,7 +165,7 @@ def main():
                 if hand_sign_id == 0 and pinch_recognized:
                     fingertip_y = landmark_list[8][1]
                     if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
-                        # mapped_value = map_number(fingertip_y, 600, 1300, 3, 12)
+                        # mapped_value = map_number(fingertip_y, 0, 2300, 0, 390)
                         # pwm.ChangeDutyCycle(mapped_value)
                         print("fingertip-y:", fingertip_y)
                         prev_fingertip_y = fingertip_y
