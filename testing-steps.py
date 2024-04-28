@@ -9,11 +9,11 @@ kit = MotorKit(i2c=board.I2C(), address=0x60)
 def move_stepper(steps, direction):
     if direction == "forward":
         for _ in range(abs(steps)):
-            kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.SINGLE)
+            kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
             time.sleep(0.01)
     elif direction == "backward":
         for _ in range(abs(steps)):
-            kit.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.SINGLE)
+            kit.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
             time.sleep(0.01)
 
 def main():
