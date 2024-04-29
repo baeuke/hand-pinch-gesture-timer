@@ -188,7 +188,7 @@ def main():
                     fingertip_y = landmark_list[8][1]
                     if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                         mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
-
+                        mapped_value = round(mapped_value)
                         move_stepper(mapped_value)
 
                         print("fingertip-y:", fingertip_y)
