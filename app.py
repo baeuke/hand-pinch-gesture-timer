@@ -212,8 +212,10 @@ def main():
 
                     if hand_sign_id == 0 and pinch_recognized:
                         fingertip_y = landmark_list[8][1]
-                        if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
+                        # below, <=100 is needed to ignore rapid movement
+                        if 50 <= abs(fingertip_y - prev_fingertip_y) <= 100: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             # print("fingertip-y:", fingertip_y)
+
                             mapped_value = map_number(fingertip_y, 1700, 300, 0, 390)
                             mapped_value = round(mapped_value) # no float
                             move_stepper(mapped_value)
@@ -224,6 +226,7 @@ def main():
                             if last_servo_angle != desired_angle:
                                 set_servo_angle(desired_angle)
                                 last_servo_angle = desired_angle
+
 
 
     finally:
