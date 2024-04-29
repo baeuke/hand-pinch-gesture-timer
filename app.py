@@ -124,6 +124,7 @@ def set_servo_angle(angle):
 
 def main():
     try:
+        set_servo_angle(90)
         print("inside main")
         pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
         pinch_up_detected = False
@@ -223,6 +224,7 @@ def main():
 
 
     finally:
+        set_servo_angle(90)
         move_stepper(0)
         kit.stepper2.release()
         print("Stepper motor released.")
