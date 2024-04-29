@@ -306,13 +306,13 @@ def main():
 
 
         print ("breeaked")
-        print("final position:", current_position)
+        final_position = current_position
+        print("final position:", final_position)
         move_stepper(0)
         set_servo_angle(90)
-        if 250 <= current_position <= 290:
+        if 250 <= final_position <= 290:
             timed_stepper(280)
             set_timer(10)
-
 
 
 
