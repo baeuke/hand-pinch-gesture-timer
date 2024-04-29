@@ -135,7 +135,7 @@ def move_stepper(target_position):
     for _ in range(abs(steps_needed)):
         kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
         i+=b # incrementing 'virtual' current position to know if we need to rotate the magnet (servo)
-        desired_angle = 80 if i <= 30 else 40 # so, below position of 30 we want the magnet to always be 80
+        desired_angle = 80 if i <= 30 else 60 # so, below position of 30 we want the magnet to always be 80
         if last_servo_angle != desired_angle: #otherwise set to 40 degrees
             set_servo_angle(desired_angle)
             last_servo_angle = desired_angle
