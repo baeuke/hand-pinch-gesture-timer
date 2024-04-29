@@ -37,6 +37,13 @@ def get_args():
 
 print("before main")
 
+
+
+
+
+
+
+
 def main():
     print("inside main")
     pinch_recognized = False

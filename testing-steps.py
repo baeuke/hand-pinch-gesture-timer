@@ -1,3 +1,9 @@
+
+# this code is for giving exact number of steps as an input
+
+# +10 would move our object up for 10 steps (backward direction)
+# -10 would move our object down for 10 steps (forward direction)
+
 import time
 import board
 from adafruit_motor import stepper

@@ -24,7 +24,12 @@ from adafruit_motorkit import MotorKit
 
 kit = MotorKit(i2c=board.I2C(), address=0x60)
 
+current_position = 0  # Starting position of the stepper motor
+
+
 #####STEPPER SETUP END######
+
+
 
 ########################################################
 
@@ -69,7 +74,24 @@ def get_args():
 
     return args
 
-print("before main")
+
+
+def move_stepper(target_position):
+    global current_position
+    steps_needed = target_position - current_position
+
+    if steps_needed > 0:
+        direction = stepper.BACKWARD
+    else:
+        direction = stepper.FORWARD
+
+    # Move the stepper motor the required number of steps
+    for _ in range(abs(steps_needed)):
+        kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
+        time.sleep(0.01)
+
+    # Update the current position
+    current_position = target_position
 
 
 
@@ -165,8 +187,10 @@ def main():
                 if hand_sign_id == 0 and pinch_recognized:
                     fingertip_y = landmark_list[8][1]
                     if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
-                        # mapped_value = map_number(fingertip_y, 0, 2300, 0, 390)
-                        # pwm.ChangeDutyCycle(mapped_value)
+                        mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
+
+                        move_stepper(mapped_value)
+
                         print("fingertip-y:", fingertip_y)
                         prev_fingertip_y = fingertip_y
 

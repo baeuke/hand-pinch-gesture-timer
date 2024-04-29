@@ -1,3 +1,9 @@
+
+# this code is for giving an exact position beetween 0 and 350
+# for stepper motor to do needed steps to get to that point
+
+
+
 import time
 import board
 from adafruit_motor import stepper
