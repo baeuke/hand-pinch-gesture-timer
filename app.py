@@ -188,12 +188,12 @@ def main():
                     if hand_sign_id == 0 and pinch_recognized:
                         fingertip_y = landmark_list[8][1]
                         if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
+                            print("fingertip-y:", fingertip_y)
                             mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
                             mapped_value = round(mapped_value)
                             move_stepper(mapped_value)
-
-                            print("fingertip-y:", fingertip_y)
                             prev_fingertip_y = fingertip_y
+
     finally:
         kit.stepper2.release()
         print("Stepper motor released.")
