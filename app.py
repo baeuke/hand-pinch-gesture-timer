@@ -223,7 +223,8 @@ def main():
                         print("\n")
                         pinch_recognized = True
 
-                    if hand_sign_id == 1 and current_position > 50:
+                    if hand_sign_id == 2 and current_position > 50:
+                        print("OPEN PALM")
                         break
 
 
