@@ -109,21 +109,21 @@ def move_stepper(target_position):
 
     if steps_needed > 0:
         direction = stepper.BACKWARD
-        b = 1
+        b = 1 # positive incrementer for the 0 -> 390 range
     else:
         direction = stepper.FORWARD
-        b = -1
+        b = -1 # negative incrementer for the 0 -> 390 range
 
     i = current_position
     # move the stepper motor the required number of steps
     for _ in range(abs(steps_needed)):
         kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
-        i+=b
+        i+=b # incrementing 'virtual' current position to know if we need to rotate the magnet (servo)
         desired_angle = 90 if i <= 30 else 40
         if last_servo_angle != desired_angle:
             set_servo_angle(desired_angle)
             last_servo_angle = desired_angle
-        time.sleep(0.01)
+        # time.sleep(0.01)
 
     # update the current position
     current_position = target_position
@@ -246,8 +246,6 @@ def main():
                         # below, <=100 is needed to ignore rapid movement
                         if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             # print("fingertip-y:", fingertip_y)
-
-
                             loop_counter = 1
 
                             mapped_value = map_number(fingertip_y, 1700, 300, 0, 390)
@@ -262,6 +260,8 @@ def main():
 
 
         print ("breeaked")
+        print("final position:", current_position)
+
 
 
 
