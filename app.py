@@ -185,12 +185,19 @@ def timed_stepper(target_position):
 #########START TIMER COMPONENT##########################
 def set_timer(minutes):
     seconds = minutes * 60
+    servo_counter = 0
     while seconds:
         mins, secs = divmod(seconds, 60)
         timeformat = '{:02d}:{:02d}'.format(mins, secs)
         print(timeformat, end='\r')
         time.sleep(1)
         seconds -= 1
+        if servo_counter == 0:
+            set_servo_angle(20)
+
+
+        kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
+
     print("Time's up!")
 #########END TIMER COMPONENT####################
 ########################################################
