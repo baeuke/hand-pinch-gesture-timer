@@ -168,6 +168,7 @@ def main():
         # FPS Measurement ########################################################
         cvFpsCalc = CvFpsCalc(buffer_len=10)
 
+        loop_counter = 0
 
         while True:
             # print("inside true")
@@ -213,8 +214,12 @@ def main():
                     if hand_sign_id == 0 and pinch_recognized:
                         fingertip_y = landmark_list[8][1]
                         # below, <=100 is needed to ignore rapid movement
-                        if 50 <= abs(fingertip_y - prev_fingertip_y) <= 100: # if prev_fingertip_y is None or ... <- might be good just for additional check
+                        if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             # print("fingertip-y:", fingertip_y)
+                            if loop_counter > 1 & abs(fingertip_y - prev_fingertip_y) <= 100:
+                                continue
+
+                            loop_counter += 1
 
                             mapped_value = map_number(fingertip_y, 1700, 300, 0, 390)
                             mapped_value = round(mapped_value) # no float
