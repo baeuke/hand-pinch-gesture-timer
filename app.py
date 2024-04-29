@@ -198,6 +198,8 @@ def main():
 
 
 
+
+
 def calc_landmark_list(image, landmarks):
     image_width, image_height = image.shape[1], image.shape[0]
 
@@ -245,3 +247,5 @@ def pre_process_landmark(landmark_list):
 
 if __name__ == '__main__':
     main()
+
+kit.stepper2.release()
