@@ -320,7 +320,7 @@ def main():
         print("final position:", final_position)
         move_stepper(0)
         # 10 minutes:
-        if 200 < final_position <= 250:
+        if 248 < final_position <= 270:
             set_servo_angle(80) #bigger blob
             timed_stepper(280)
             set_timer(10)
@@ -345,7 +345,7 @@ def main():
             timed_stepper(175)
             set_timer(3)
         # 5 minutes:
-        elif 131 < final_position <= 200:
+        elif 131 < final_position <= 248:
             set_servo_angle(60) #smaller blob
             timed_stepper(215)
             set_timer(5)
