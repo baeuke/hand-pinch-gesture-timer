@@ -160,6 +160,11 @@ def main():
             results = hands.process(image)
             image.flags.writeable = True
 
+            key = cv.waitKey(1)
+            print("Key pressed:", key)  # Print the keycode of the pressed key
+            if key == ord('q'):
+                print("Quitting...")
+                break
 
 
             if results.multi_hand_landmarks is not None:
@@ -194,8 +199,6 @@ def main():
                             move_stepper(mapped_value)
                             prev_fingertip_y = fingertip_y
 
-            if cv.waitKey(1) & 0xFF == ord('q'):
-                break
 
     finally:
         move_stepper(0)
