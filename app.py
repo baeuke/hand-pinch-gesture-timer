@@ -44,7 +44,7 @@ GPIO.setup(SERVO_PIN, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_PIN, 50) # setting frequency to 50Hz
 pwm.start(0)
 
-last_servo_angle = 90
+last_servo_angle = 75
 #####SERVO-MOTOR SETUP END######
 
 
@@ -135,7 +135,7 @@ def move_stepper(target_position):
     for _ in range(abs(steps_needed)):
         kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
         i+=b # incrementing 'virtual' current position to know if we need to rotate the magnet (servo)
-        desired_angle = 90 if i <= 30 else 40 # so, below position of 30 we want the magnet to always be 90
+        desired_angle = 75 if i <= 30 else 40 # so, below position of 30 we want the magnet to always be 75
         if last_servo_angle != desired_angle: #otherwise set to 40 degrees
             set_servo_angle(desired_angle)
             last_servo_angle = desired_angle
@@ -319,7 +319,7 @@ def main():
         final_position = current_position
         print("final position:", final_position)
         move_stepper(0)
-        set_servo_angle(80)
+        set_servo_angle(75)
         # 10 minutes:
         if 255 < final_position <= 305:
             timed_stepper(280)
@@ -350,7 +350,7 @@ def main():
         move_stepper(0)
         kit.stepper2.release()
         print("Stepper motor released.")
-        set_servo_angle(90)
+        set_servo_angle(75)
         pwm.stop()
         GPIO.cleanup()  # Clean up GPIO to ensure all pins are reset properly
         print("GPIO cleaned up.")
