@@ -84,6 +84,8 @@ def move_stepper(target_position):
 
     target_position = max(0, min(target_position, 350))  # constrain the target position within the range 0 to 350
 
+    print("target_position:", target_position)
+
     steps_needed = target_position - current_position
 
     if steps_needed > 0:
@@ -193,7 +195,7 @@ def main():
                             mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
                             mapped_value = round(mapped_value) # no float
                             move_stepper(mapped_value)
-                            print("mapped_val", mapped_value)
+                            # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
 
 
