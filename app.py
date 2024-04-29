@@ -113,7 +113,6 @@ def set_servo_angle(angle):
 ########################################################
 ########################################################
 #########START STEPPER MOTOR COMPONENT##################
-
 def move_stepper(target_position):
     global current_position
     global last_servo_angle
@@ -144,12 +143,58 @@ def move_stepper(target_position):
 
     # update the current position
     current_position = target_position
-
 #########END STEPPER MOTOR COMPONENT####################
 ########################################################
 ########################################################
 
 
+########################################################
+########################################################
+#########START TIMED STEPPER COMPONENT##################
+# this component is for using stepper after timer was set
+def timed_stepper(target_position):
+    global current_position
+    global last_servo_angle
+
+    target_position = max(bottle_range_start, min(target_position, bottle_range_end))  # constrain the target position within the range 0 to 390
+
+    print("target_position:", target_position)
+
+    steps_needed = target_position - current_position
+
+    if steps_needed > 0:
+        direction = stepper.BACKWARD
+    else:
+        direction = stepper.FORWARD
+
+
+    # move the stepper motor the required number of steps
+    for _ in range(abs(steps_needed)):
+        kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
+        time.sleep(0.005)
+
+    # update the current position
+    current_position = target_position
+#########END TIMED STEPPER COMPONENT####################
+########################################################
+########################################################
+
+
+########################################################
+########################################################
+#########START TIMER COMPONENT##########################
+def set_timer(minutes):
+    seconds = minutes * 60
+    while seconds:
+        mins, secs = divmod(seconds, 60)
+        timeformat = '{:02d}:{:02d}'.format(mins, secs)
+        print(timeformat, end='\r')
+        time.sleep(1)
+        seconds -= 1
+    print("Time's up!")
+#########END TIMER COMPONENT####################
+########################################################
+########################################################
 
 def main():
     try:
@@ -262,7 +307,11 @@ def main():
 
         print ("breeaked")
         print("final position:", current_position)
-        # if current_position
+        move_stepper(0)
+        set_servo_angle(90)
+        if 250 <= current_position <= 290:
+            timed_stepper(280)
+            set_timer(10)
 
 
 
