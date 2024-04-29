@@ -14,6 +14,8 @@ from utils import CvFpsCalc
 from model import KeyPointClassifier
 
 ########################################################
+########################################################
+########################################################
 
 #####STEPPER SETUP START######
 
@@ -29,8 +31,8 @@ current_position = 0  # Starting position of the stepper motor
 
 #####STEPPER SETUP END######
 
-
-
+########################################################
+########################################################
 ########################################################
 
 #####SERVO-MOTOR SETUP START######
@@ -47,6 +49,7 @@ pwm.start(12)
 #####SERVO-MOTOR SETUP END######
 
 ########################################################
+
 
 def map_number(n, start1, stop1, start2, stop2):
     return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
@@ -78,6 +81,9 @@ def get_args():
 
 def move_stepper(target_position):
     global current_position
+
+    target_position = max(0, min(target_position, 350))  # constrain the target position within the range 0 to 350
+
     steps_needed = target_position - current_position
 
     if steps_needed > 0:
@@ -85,12 +91,12 @@ def move_stepper(target_position):
     else:
         direction = stepper.FORWARD
 
-    # Move the stepper motor the required number of steps
+    # move the stepper motor the required number of steps
     for _ in range(abs(steps_needed)):
         kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
         time.sleep(0.01)
 
-    # Update the current position
+    # update the current position
     current_position = target_position
 
 
@@ -140,13 +146,10 @@ def main():
 
 
         while True:
-
-
             # print("inside true")
             image = camera.capture_array()
 
             fps = cvFpsCalc.get()
-
 
             # Camera capture #####################################################
 
@@ -159,7 +162,6 @@ def main():
             image.flags.writeable = False
             results = hands.process(image)
             image.flags.writeable = True
-
 
             if results.multi_hand_landmarks is not None:
                 for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
@@ -189,7 +191,7 @@ def main():
                         if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             print("fingertip-y:", fingertip_y)
                             mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
-                            mapped_value = round(mapped_value)
+                            mapped_value = round(mapped_value) # no float
                             move_stepper(mapped_value)
                             prev_fingertip_y = fingertip_y
 
@@ -200,8 +202,6 @@ def main():
         print("Stepper motor released.")
         GPIO.cleanup()  # Clean up GPIO to ensure all pins are reset properly
         print("GPIO cleaned up.")
-
-
 
 
 
