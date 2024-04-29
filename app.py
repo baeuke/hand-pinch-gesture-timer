@@ -144,7 +144,8 @@ def main():
         # global last_servo_angle
         # set_servo_angle(last_servo_angle)
 
-        rapid_range_flag = 0 # to break from the main loop
+        open_palm_flag = 0 # to break from the main loop
+        rapid_range_flag = 0 # to continue in the main loop
         print("inside main")
         pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
         pinch_up_detected = False
@@ -227,6 +228,7 @@ def main():
 
                     if hand_sign_id == 2 and current_position > 50:
                         print("OPEN PALM")
+                        open_palm_flag = 1
                         break
 
 
@@ -237,7 +239,7 @@ def main():
                         fingertip_y = landmark_list[8][1]
 
                         if loop_counter > 1 and abs(fingertip_y - prev_fingertip_y) >= 100:
-                            rapid_range_flag = 0
+                            rapid_range_flag = 1
                             break
 
                         # below, <=100 is needed to ignore rapid movement
@@ -252,6 +254,9 @@ def main():
                             move_stepper(mapped_value)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
+
+                if open_palm_flag == 1:
+                    break
 
 
 
