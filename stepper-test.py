@@ -1,45 +1,49 @@
-
-
-###steptest.py
-
-
-# Below imports all neccessary packages to make this Python Script run
 import time
 import board
 from adafruit_motor import stepper
 from adafruit_motorkit import MotorKit
 
-
-# Below initialises the variable kit to be our I2C Connected Adafruit Motor HAT
-print("before kit")
 kit = MotorKit(i2c=board.I2C(), address=0x60)
 
-# If you uncomment below it will start by de-energising the Stepper Motor,
-# Worth noting the final state the stepper motor is in is what will continue.
-# Energised Stepper Motors get HOT over time along with the electronic silicon >
+current_position = 0  # Starting position of the stepper motor
 
-# kit.stepper1.release()
 
-# The below loop will run 500 times. Each loop it will move one step, clockwise>
-# This will almost look like a smooth rotation.
-print("before 1 for")
-for i in range(200):
-    kit.stepper2.onestep()
-    time.sleep(0.01)
+def move_stepper(target_position):
+    global current_position
+    steps_needed = target_position - current_position
 
-# The below loop will run 500 times. Each loop it will move two step, anti-Cloc>
-# This will almost look like a smooth rotation.
-print("before 2 for")
-for i in range(200):
-   kit.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
-   time.sleep(0.01)
+    if steps_needed > 0:
+        direction = stepper.BACKWARD
+    else:
+        direction = stepper.FORWARD
 
-# The below loop will run 500 times. Each loop it will move a Micro-step, anti->
-# This will rotate very very slowly.
-print("before 3 for")
-for i in range(200):
-   kit.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.MICROSTEP)
-   time.sleep(0.01)
+    # Move the stepper motor the required number of steps
+    for _ in range(abs(steps_needed)):
+        kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
+        time.sleep(0.01)
 
-# The below line will de-energise the Stepper Motor so it can freely move
+    # Update the current position
+    current_position = target_position
+
+
+def main():
+    global current_position
+    while True:
+        position_input = input("Enter the target position (0-350, -1 to exit): ")
+        try:
+            target_position = int(position_input)
+            if target_position == -1:
+                break
+            if not 0 <= target_position <= 350:
+                print("Invalid position. Please enter a position between 0 and 350.")
+                continue
+            move_stepper(target_position)
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
+
+
+if __name__ == "__main__":
+    main()
+
 kit.stepper2.release()
+print("Stepper motor released.")
