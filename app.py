@@ -39,7 +39,7 @@ current_position = 0  # Starting position of the stepper motor
 
 import RPi.GPIO as GPIO
 
-SERVO_PIN = 12
+SERVO_PIN = 21
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SERVO_PIN, GPIO.OUT)
 
