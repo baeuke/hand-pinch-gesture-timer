@@ -46,6 +46,8 @@ GPIO.setup(SERVO_PIN, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_PIN, 50) # setting frequency to 50Hz
 pwm.start(0)
 
+last_servo_angle = 90
+
 #####SERVO-MOTOR SETUP END######
 
 ########################################################
@@ -76,37 +78,6 @@ def get_args():
 
     return args
 
-########################################################
-########################################################
-#########START STEPPER MOTOR COMPONENT##################
-
-def move_stepper(target_position):
-    global current_position
-
-    target_position = max(0, min(target_position, 390))  # constrain the target position within the range 0 to 390
-
-    print("target_position:", target_position)
-
-    steps_needed = target_position - current_position
-
-    if steps_needed > 0:
-        direction = stepper.BACKWARD
-    else:
-        direction = stepper.FORWARD
-
-    # move the stepper motor the required number of steps
-    for _ in range(abs(steps_needed)):
-        kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
-        time.sleep(0.01)
-
-    # update the current position
-    current_position = target_position
-
-#########END STEPPER MOTOR COMPONENT####################
-########################################################
-########################################################
-
-
 
 ########################################################
 ########################################################
@@ -122,11 +93,56 @@ def set_servo_angle(angle):
 ########################################################
 
 
+########################################################
+########################################################
+#########START STEPPER MOTOR COMPONENT##################
+
+def move_stepper(target_position):
+    global current_position
+    global last_servo_angle
+
+    target_position = max(0, min(target_position, 390))  # constrain the target position within the range 0 to 390
+
+    print("target_position:", target_position)
+
+    steps_needed = target_position - current_position
+
+    if steps_needed > 0:
+        direction = stepper.BACKWARD
+        b = 1
+    else:
+        direction = stepper.FORWARD
+        b = -1
+
+    i = current_position
+    # move the stepper motor the required number of steps
+    for _ in range(abs(steps_needed)):
+        kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
+        i+=b
+        desired_angle = 90 if i <= 30 else 40
+        if last_servo_angle != desired_angle:
+            set_servo_angle(desired_angle)
+            last_servo_angle = desired_angle
+        time.sleep(0.01)
+
+    # update the current position
+    current_position = target_position
+
+#########END STEPPER MOTOR COMPONENT####################
+########################################################
+########################################################
+
+
+
+
+
+
 
 def main():
     try:
-        last_servo_angle = 90 # to prevent calling set_servo_angle() again and again
-        set_servo_angle(last_servo_angle)
+        # last_servo_angle = 90 # to prevent calling set_servo_angle() again and again
+        # global last_servo_angle
+        # set_servo_angle(last_servo_angle)
         print("inside main")
         pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
         pinch_up_detected = False
@@ -172,6 +188,9 @@ def main():
 
         while True:
             # print("inside true")
+
+
+
             image = camera.capture_array()
 
             fps = cvFpsCalc.get()
@@ -227,10 +246,9 @@ def main():
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
 
-                            desired_angle = 90 if current_position <= 30 else 40
-                            if last_servo_angle != desired_angle:
-                                set_servo_angle(desired_angle)
-                                last_servo_angle = desired_angle
+
+
+
 
 
 
