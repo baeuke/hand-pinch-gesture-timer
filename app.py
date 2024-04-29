@@ -188,9 +188,6 @@ def main():
 
         while True:
             # print("inside true")
-
-
-
             image = camera.capture_array()
 
             fps = cvFpsCalc.get()
@@ -226,6 +223,9 @@ def main():
                         print("\n")
                         pinch_recognized = True
 
+                    if hand_sign_id == 1 and current_position > 50:
+                        break
+
 
                     elif hand_sign_id != 0:
                         pinch_recognized = False
@@ -248,6 +248,8 @@ def main():
                             move_stepper(mapped_value)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
+
+        print ("breeaked")
 
 
 
