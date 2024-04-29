@@ -18,7 +18,6 @@ from model import KeyPointClassifier
 ########################################################
 
 #####STEPPER SETUP START######
-
 import time
 import board
 from adafruit_motor import stepper
@@ -27,16 +26,15 @@ from adafruit_motorkit import MotorKit
 kit = MotorKit(i2c=board.I2C(), address=0x60)
 
 current_position = 0  # Starting position of the stepper motor
-
-
 #####STEPPER SETUP END######
 
+
 ########################################################
 ########################################################
 ########################################################
+
 
 #####SERVO-MOTOR SETUP START######
-
 import RPi.GPIO as GPIO
 
 SERVO_PIN = 21
@@ -47,9 +45,28 @@ pwm = GPIO.PWM(SERVO_PIN, 50) # setting frequency to 50Hz
 pwm.start(0)
 
 last_servo_angle = 90
-
 #####SERVO-MOTOR SETUP END######
 
+
+########################################################
+########################################################
+########################################################
+
+
+#####RANGE SETUP START######
+# start is the vertical bottom
+# end is the vertical top
+
+bottle_range_start = 0
+bottle_range_end = 390
+
+# hand range is basically camera's coordinate range which increases from top to bottom
+hand_range_start = 1700
+hand_range_end = 300
+#####RANGE SETUP END######
+
+
+########################################################
 ########################################################
 
 
@@ -83,7 +100,7 @@ def get_args():
 ########################################################
 #########START SERVO MOTOR COMPONENT################
 def set_servo_angle(angle):
-    duty = (angle / 90)*5 + 5.5
+    duty = (angle / 90)*5 + 5.5 # this will give the [5.5, 10.5] range for 0 to 90 degrees
     pwm.ChangeDutyCycle(duty)
     time.sleep(0.5)
     pwm.ChangeDutyCycle(0)
@@ -101,7 +118,7 @@ def move_stepper(target_position):
     global current_position
     global last_servo_angle
 
-    target_position = max(0, min(target_position, 390))  # constrain the target position within the range 0 to 390
+    target_position = max(bottle_range_start, min(target_position, bottle_range_end))  # constrain the target position within the range 0 to 390
 
     print("target_position:", target_position)
 
@@ -119,8 +136,8 @@ def move_stepper(target_position):
     for _ in range(abs(steps_needed)):
         kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
         i+=b # incrementing 'virtual' current position to know if we need to rotate the magnet (servo)
-        desired_angle = 90 if i <= 30 else 40
-        if last_servo_angle != desired_angle:
+        desired_angle = 90 if i <= 30 else 40 # so, below position of 30 we want the magnet to always be 90
+        if last_servo_angle != desired_angle: #otherwise set to 40 degrees
             set_servo_angle(desired_angle)
             last_servo_angle = desired_angle
         time.sleep(0.005)
@@ -134,16 +151,8 @@ def move_stepper(target_position):
 
 
 
-
-
-
-
 def main():
     try:
-        # last_servo_angle = 90 # to prevent calling set_servo_angle() again and again
-        # global last_servo_angle
-        # set_servo_angle(last_servo_angle)
-
         open_palm_flag = 0 # to break from the main loop
         rapid_range_flag = 0 # to continue in the main loop
         print("inside main")
@@ -155,14 +164,9 @@ def main():
         # Argument parsing #################################################################
         args = get_args()
 
-        # cap_device = args.device
-        # cap_width = args.width
-        # cap_height = args.height
-
         use_static_image_mode = args.use_static_image_mode
         min_detection_confidence = args.min_detection_confidence
         min_tracking_confidence = args.min_tracking_confidence
-
 
         # Camera preparation ###############################################################
         camera = Picamera2()
@@ -170,7 +174,6 @@ def main():
         camera.configure(capture_config)
         camera.start()
         print("aftter camera")
-
 
         # Model load #############################################################
         mp_hands = mp.solutions.hands
@@ -187,16 +190,14 @@ def main():
         # FPS Measurement ########################################################
         cvFpsCalc = CvFpsCalc(buffer_len=10)
 
-        loop_counter = 0
+        loop_counter = 0 # for knowing the first iteration of the loop
 
         while True:
-            # print("inside true")
             image = camera.capture_array()
 
             fps = cvFpsCalc.get()
 
             # Camera capture #####################################################
-
             image = cv.flip(image, 1)  # Mirror display
             debug_image = copy.deepcopy(image)
 
@@ -248,7 +249,7 @@ def main():
                             # print("fingertip-y:", fingertip_y)
                             loop_counter = 1
 
-                            mapped_value = map_number(fingertip_y, 1700, 300, 0, 390)
+                            mapped_value = map_number(fingertip_y, hand_range_start, hand_range_end, bottle_range_start, bottle_range_end)
                             mapped_value = round(mapped_value) # no float
                             move_stepper(mapped_value)
                             # print("mapped_val", mapped_value)
@@ -261,6 +262,7 @@ def main():
 
         print ("breeaked")
         print("final position:", current_position)
+        # if current_position
 
 
 
