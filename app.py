@@ -319,30 +319,35 @@ def main():
         final_position = current_position
         print("final position:", final_position)
         move_stepper(0)
-        set_servo_angle(75)
         # 10 minutes:
         if 255 < final_position <= 305:
+            set_servo_angle(75) #bigger blob
             timed_stepper(280)
             set_timer(10)
         # 20 minutes:
         elif 305 < final_position <= 325:
+            set_servo_angle(75) #bigger blob
             timed_stepper(320)
             set_timer(20)
         # 30 minutes:
         elif 325 < final_position <= 390:
+            set_servo_angle(75) #bigger blob
             timed_stepper(375)
             set_timer(30)
         # 2 minutes:
         elif 70 <= final_position <= 110:
-            timed_stepper(280)
+            set_servo_angle(50) #smaller blob
+            timed_stepper(105)
             set_timer(2)
         # 3 minutes:
         elif 110 < final_position <= 185:
-            timed_stepper(320)
+            set_servo_angle(50) #smaller blob
+            timed_stepper(175)
             set_timer(3)
         # 5 minutes:
         elif 185 < final_position <= 255:
-            timed_stepper(375)
+            set_servo_angle(50) #smaller blob
+            timed_stepper(215)
             set_timer(5)
 
 
