@@ -160,12 +160,6 @@ def main():
             results = hands.process(image)
             image.flags.writeable = True
 
-            key = cv.waitKey(1)
-            print("Key pressed:", key)  # Print the keycode of the pressed key
-            if key == ord('q'):
-                print("Quitting...")
-                break
-
 
             if results.multi_hand_landmarks is not None:
                 for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
