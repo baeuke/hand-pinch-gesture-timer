@@ -83,7 +83,7 @@ def get_args():
 def move_stepper(target_position):
     global current_position
 
-    target_position = max(0, min(target_position, 350))  # constrain the target position within the range 0 to 350
+    target_position = max(0, min(target_position, 390))  # constrain the target position within the range 0 to 390
 
     print("target_position:", target_position)
 
@@ -122,9 +122,11 @@ def set_servo_angle(angle):
 ########################################################
 
 
+
 def main():
     try:
-        set_servo_angle(90)
+        last_servo_angle = 90 # to prevent calling set_servo_angle() again and again
+        set_servo_angle(last_servo_angle)
         print("inside main")
         pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
         pinch_up_detected = False
@@ -212,15 +214,16 @@ def main():
                         fingertip_y = landmark_list[8][1]
                         if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             # print("fingertip-y:", fingertip_y)
-                            mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
+                            mapped_value = map_number(fingertip_y, 1700, 300, 0, 390)
                             mapped_value = round(mapped_value) # no float
                             move_stepper(mapped_value)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
-                            if current_position <= 30:
-                                set_servo_angle(90)
-                            else:
-                                set_servo_angle(40)
+
+                            desired_angle = 90 if current_position <= 30 else 40
+                            if last_servo_angle != desired_angle:
+                                set_servo_angle(desired_angle)
+                                last_servo_angle = desired_angle
 
 
     finally:
