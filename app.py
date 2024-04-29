@@ -193,7 +193,7 @@ def set_timer(minutes):
         time.sleep(1)
         seconds -= 1
         if servo_counter == 0:
-            set_servo_angle(20)
+            set_servo_angle(60)
 
 
         kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
@@ -316,7 +316,7 @@ def main():
         final_position = current_position
         print("final position:", final_position)
         move_stepper(0)
-        set_servo_angle(90)
+        set_servo_angle(80)
         if 250 <= final_position <= 290:
             timed_stepper(280)
             set_timer(10)
