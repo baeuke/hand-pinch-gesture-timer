@@ -227,10 +227,10 @@ def main():
 
 
     finally:
-        set_servo_angle(90)
         move_stepper(0)
         kit.stepper2.release()
         print("Stepper motor released.")
+        set_servo_angle(90)
         pwm.stop()
         GPIO.cleanup()  # Clean up GPIO to ensure all pins are reset properly
         print("GPIO cleaned up.")
