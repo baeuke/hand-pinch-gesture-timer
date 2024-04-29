@@ -5,7 +5,7 @@ SERVO_PIN = 21
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SERVO_PIN, GPIO.OUT)
 
-pwm = GPIO.PWM(SERVO_PIN, 50)
+pwm = GPIO.PWM(SERVO_PIN, 50) # setting frequency to 50Hz
 pwm.start(0)
 
 

@@ -43,8 +43,8 @@ SERVO_PIN = 12
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SERVO_PIN, GPIO.OUT)
 
-pwm = GPIO.PWM(SERVO_PIN, 50)
-pwm.start(12)
+pwm = GPIO.PWM(SERVO_PIN, 50) # setting frequency to 50Hz
+pwm.start(0)
 
 #####SERVO-MOTOR SETUP END######
 
@@ -53,7 +53,6 @@ pwm.start(12)
 
 def map_number(n, start1, stop1, start2, stop2):
     return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
-
 
 
 def get_args():
@@ -77,7 +76,9 @@ def get_args():
 
     return args
 
-
+########################################################
+########################################################
+#########START STEPPER MOTOR COMPONENT##################
 
 def move_stepper(target_position):
     global current_position
@@ -101,6 +102,24 @@ def move_stepper(target_position):
     # update the current position
     current_position = target_position
 
+#########END STEPPER MOTOR COMPONENT####################
+########################################################
+########################################################
+
+
+
+########################################################
+########################################################
+#########START SERVO MOTOR COMPONENT################
+def set_servo_angle(angle):
+    duty = (angle / 90)*5 + 5.5
+    pwm.ChangeDutyCycle(duty)
+    time.sleep(0.5)
+    pwm.ChangeDutyCycle(0)
+
+#########END SERVO MOTOR COMPONENT##################
+########################################################
+########################################################
 
 
 def main():
@@ -197,12 +216,17 @@ def main():
                             move_stepper(mapped_value)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
+                            if current_position <= 30:
+                                set_servo_angle(90)
+                            else:
+                                set_servo_angle(40)
 
 
     finally:
         move_stepper(0)
         kit.stepper2.release()
         print("Stepper motor released.")
+        pwm.stop()
         GPIO.cleanup()  # Clean up GPIO to ensure all pins are reset properly
         print("GPIO cleaned up.")
 
