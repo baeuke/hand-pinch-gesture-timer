@@ -228,6 +228,7 @@ def main():
 
                     if hand_sign_id == 2 and current_position > 50:
                         print("OPEN PALM")
+                        time.sleep(1)
                         open_palm_flag = 1
                         break
 
