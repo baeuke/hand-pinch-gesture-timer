@@ -232,11 +232,13 @@ def main():
 
                     if hand_sign_id == 0 and pinch_recognized:
                         fingertip_y = landmark_list[8][1]
+
+                        if loop_counter > 1 and abs(fingertip_y - prev_fingertip_y) <= 100:
+                            continue
+
                         # below, <=100 is needed to ignore rapid movement
                         if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             # print("fingertip-y:", fingertip_y)
-                            if loop_counter > 1 and abs(fingertip_y - prev_fingertip_y) <= 100:
-                                continue
 
                             loop_counter = 1
 
