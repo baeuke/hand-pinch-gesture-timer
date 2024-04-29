@@ -96,103 +96,109 @@ def move_stepper(target_position):
 
 
 def main():
-    print("inside main")
-    pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
-    pinch_up_detected = False
-    prev_fingertip_y = float('inf') # setting initial val for fingertip's y coordinate to infinity (cuz the y grows from top to bottom)
-    fingertip_y = 0
+    try:
+        print("inside main")
+        pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
+        pinch_up_detected = False
+        prev_fingertip_y = float('inf') # setting initial val for fingertip's y coordinate to infinity (cuz the y grows from top to bottom)
+        fingertip_y = 0
 
-    # Argument parsing #################################################################
-    args = get_args()
+        # Argument parsing #################################################################
+        args = get_args()
 
-    # cap_device = args.device
-    # cap_width = args.width
-    # cap_height = args.height
+        # cap_device = args.device
+        # cap_width = args.width
+        # cap_height = args.height
 
-    use_static_image_mode = args.use_static_image_mode
-    min_detection_confidence = args.min_detection_confidence
-    min_tracking_confidence = args.min_tracking_confidence
-
-
-    # Camera preparation ###############################################################
-    camera = Picamera2()
-    capture_config = camera.create_still_configuration()
-    camera.configure(capture_config)
-    camera.start()
-    print("aftter camera")
+        use_static_image_mode = args.use_static_image_mode
+        min_detection_confidence = args.min_detection_confidence
+        min_tracking_confidence = args.min_tracking_confidence
 
 
-    # Model load #############################################################
-    mp_hands = mp.solutions.hands
-    hands = mp_hands.Hands(
-        static_image_mode=use_static_image_mode,
-        max_num_hands=1,
-        min_detection_confidence=min_detection_confidence,
-        min_tracking_confidence=min_tracking_confidence,
-    )
-
-    keypoint_classifier = KeyPointClassifier()
+        # Camera preparation ###############################################################
+        camera = Picamera2()
+        capture_config = camera.create_still_configuration()
+        camera.configure(capture_config)
+        camera.start()
+        print("aftter camera")
 
 
-    # FPS Measurement ########################################################
-    cvFpsCalc = CvFpsCalc(buffer_len=10)
+        # Model load #############################################################
+        mp_hands = mp.solutions.hands
+        hands = mp_hands.Hands(
+            static_image_mode=use_static_image_mode,
+            max_num_hands=1,
+            min_detection_confidence=min_detection_confidence,
+            min_tracking_confidence=min_tracking_confidence,
+        )
+
+        keypoint_classifier = KeyPointClassifier()
 
 
-    while True:
+        # FPS Measurement ########################################################
+        cvFpsCalc = CvFpsCalc(buffer_len=10)
 
 
-        # print("inside true")
-        image = camera.capture_array()
-
-        fps = cvFpsCalc.get()
+        while True:
 
 
-        # Camera capture #####################################################
+            # print("inside true")
+            image = camera.capture_array()
 
-        image = cv.flip(image, 1)  # Mirror display
-        debug_image = copy.deepcopy(image)
-
-        # Detection implementation #############################################################
-        # image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-
-        image.flags.writeable = False
-        results = hands.process(image)
-        image.flags.writeable = True
+            fps = cvFpsCalc.get()
 
 
+            # Camera capture #####################################################
 
-        if results.multi_hand_landmarks is not None:
-            for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
-                                                  results.multi_handedness):
+            image = cv.flip(image, 1)  # Mirror display
+            debug_image = copy.deepcopy(image)
 
-                landmark_list = calc_landmark_list(debug_image, hand_landmarks)
+            # Detection implementation #############################################################
+            # image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
-                # Conversion to relative coordinates / normalized coordinates
-                pre_processed_landmark_list = pre_process_landmark(
-                    landmark_list)
-
-                # print("landmarks:", pre_processed_landmark_list)
-
-                hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
-                if hand_sign_id == 0 and not pinch_recognized:
-                    print("\n")
-                    print("Pinch Gesture Recognized!")
-                    print("\n")
-                    pinch_recognized = True
+            image.flags.writeable = False
+            results = hands.process(image)
+            image.flags.writeable = True
 
 
-                elif hand_sign_id != 0:
-                    pinch_recognized = False
 
-                if hand_sign_id == 0 and pinch_recognized:
-                    fingertip_y = landmark_list[8][1]
-                    if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
-                        mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
-                        mapped_value = round(mapped_value)
-                        move_stepper(mapped_value)
+            if results.multi_hand_landmarks is not None:
+                for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
+                                                      results.multi_handedness):
 
-                        print("fingertip-y:", fingertip_y)
-                        prev_fingertip_y = fingertip_y
+                    landmark_list = calc_landmark_list(debug_image, hand_landmarks)
+
+                    # Conversion to relative coordinates / normalized coordinates
+                    pre_processed_landmark_list = pre_process_landmark(
+                        landmark_list)
+
+                    # print("landmarks:", pre_processed_landmark_list)
+
+                    hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
+                    if hand_sign_id == 0 and not pinch_recognized:
+                        print("\n")
+                        print("Pinch Gesture Recognized!")
+                        print("\n")
+                        pinch_recognized = True
+
+
+                    elif hand_sign_id != 0:
+                        pinch_recognized = False
+
+                    if hand_sign_id == 0 and pinch_recognized:
+                        fingertip_y = landmark_list[8][1]
+                        if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
+                            mapped_value = map_number(fingertip_y, 1700, 300, 0, 350)
+                            mapped_value = round(mapped_value)
+                            move_stepper(mapped_value)
+
+                            print("fingertip-y:", fingertip_y)
+                            prev_fingertip_y = fingertip_y
+    finally:
+        kit.stepper2.release()
+        print("Stepper motor released.")
+        GPIO.cleanup()  # Clean up GPIO to ensure all pins are reset properly
+        print("GPIO cleaned up.")
 
 
 
@@ -248,4 +254,3 @@ def pre_process_landmark(landmark_list):
 if __name__ == '__main__':
     main()
 
-kit.stepper2.release()
