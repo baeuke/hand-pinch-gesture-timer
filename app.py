@@ -143,6 +143,8 @@ def main():
         # last_servo_angle = 90 # to prevent calling set_servo_angle() again and again
         # global last_servo_angle
         # set_servo_angle(last_servo_angle)
+
+        rapid_range_flag = 0 # to break from the main loop
         print("inside main")
         pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
         pinch_up_detected = False
@@ -235,7 +237,8 @@ def main():
                         fingertip_y = landmark_list[8][1]
 
                         if loop_counter > 1 and abs(fingertip_y - prev_fingertip_y) >= 100:
-                            continue
+                            rapid_range_flag = 0
+                            break
 
                         # below, <=100 is needed to ignore rapid movement
                         if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
@@ -249,6 +252,8 @@ def main():
                             move_stepper(mapped_value)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
+
+
 
         print ("breeaked")
 
