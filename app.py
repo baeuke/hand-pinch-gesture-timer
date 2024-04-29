@@ -123,7 +123,7 @@ def move_stepper(target_position):
         if last_servo_angle != desired_angle:
             set_servo_angle(desired_angle)
             last_servo_angle = desired_angle
-        # time.sleep(0.01)
+        time.sleep(0.005)
 
     # update the current position
     current_position = target_position
