@@ -40,7 +40,7 @@ def main():
             target_position = int(position_input)
             if target_position == -1:
                 break
-            if not 0 <= target_position <= 350:
+            if not 0 <= target_position <= 390:
                 print("Invalid position. Please enter a position between 0 and 350.")
                 continue
             move_stepper(target_position)
