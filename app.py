@@ -194,7 +194,11 @@ def main():
                             move_stepper(mapped_value)
                             prev_fingertip_y = fingertip_y
 
+            if cv.waitKey(1) & 0xFF == ord('q'):
+                break
+
     finally:
+        move_stepper(0)
         kit.stepper2.release()
         print("Stepper motor released.")
         GPIO.cleanup()  # Clean up GPIO to ensure all pins are reset properly
