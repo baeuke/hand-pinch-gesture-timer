@@ -135,7 +135,7 @@ def move_stepper(target_position):
     for _ in range(abs(steps_needed)):
         kit.stepper2.onestep(direction=direction, style=stepper.DOUBLE)
         i+=b # incrementing 'virtual' current position to know if we need to rotate the magnet (servo)
-        desired_angle = 80 if i <= 30 else 60 # so, below position of 30 we want the magnet to always be 80
+        desired_angle = 80 if i <= 30 else 50 # so, below position of 30 we want the magnet to always be 80
         if last_servo_angle != desired_angle: #otherwise set to 40 degrees
             set_servo_angle(desired_angle)
             last_servo_angle = desired_angle
@@ -320,32 +320,32 @@ def main():
         print("final position:", final_position)
         move_stepper(0)
         # 10 minutes:
-        if 255 < final_position <= 305:
+        if 200 < final_position <= 250:
             set_servo_angle(80) #bigger blob
             timed_stepper(280)
             set_timer(10)
         # 20 minutes:
-        elif 305 < final_position <= 325:
+        elif 250 < final_position <= 295:
             set_servo_angle(80) #bigger blob
             timed_stepper(320)
             set_timer(20)
         # 30 minutes:
-        elif 325 < final_position <= 390:
+        elif 295 < final_position <= 390:
             set_servo_angle(80) #bigger blob
             timed_stepper(375)
             set_timer(30)
         # 2 minutes:
-        elif 70 <= final_position <= 110:
+        elif 30 <= final_position <= 75:
             set_servo_angle(60) #smaller blob
             timed_stepper(105)
             set_timer(2)
         # 3 minutes:
-        elif 110 < final_position <= 185:
+        elif 75 < final_position <= 131:
             set_servo_angle(60) #smaller blob
             timed_stepper(175)
             set_timer(3)
         # 5 minutes:
-        elif 185 < final_position <= 255:
+        elif 131 < final_position <= 200:
             set_servo_angle(60) #smaller blob
             timed_stepper(215)
             set_timer(5)
