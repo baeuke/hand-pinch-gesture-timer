@@ -185,16 +185,19 @@ def timed_stepper(target_position):
 #########START TIMER COMPONENT##########################
 def set_timer(minutes):
     seconds = minutes * 60
-    servo_counter = 0
+    new_servo_angle = 60
     while seconds:
         mins, secs = divmod(seconds, 60)
         timeformat = '{:02d}:{:02d}'.format(mins, secs)
         print(timeformat, end='\r')
         time.sleep(1)
         seconds -= 1
-        if servo_counter == 0:
+        if new_servo_angle == 60:
             set_servo_angle(60)
-
+            new_servo_angle = 61
+        else:
+            set_servo_angle(61)
+            new_servo_angle = 60
 
         kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
 
@@ -318,7 +321,7 @@ def main():
         move_stepper(0)
         set_servo_angle(80)
         # 10 minutes:
-        if 245 < final_position <= 305:
+        if 255 < final_position <= 305:
             timed_stepper(280)
             set_timer(10)
         # 20 minutes:
@@ -338,7 +341,7 @@ def main():
             timed_stepper(320)
             set_timer(3)
         # 5 minutes:
-        elif 185 < final_position <= 245:
+        elif 185 < final_position <= 255:
             timed_stepper(375)
             set_timer(5)
 
