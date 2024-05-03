@@ -127,7 +127,7 @@ def move_stepper(target_position):
 
     target_position = max(bottle_range_start, min(target_position, bottle_range_end))  # constrain the target position within the range 0 to 390
 
-    print("target_position:", target_position)
+    ### print("target_position:", target_position)
 
     steps_needed = target_position - current_position
 
@@ -166,7 +166,7 @@ def timed_stepper(target_position):
 
     target_position = max(bottle_range_start, min(target_position, bottle_range_end))  # constrain the target position within the range 0 to 390
 
-    print("target_position:", target_position)
+    ### print("target_position:", target_position)
 
     steps_needed = target_position - current_position
 
@@ -222,7 +222,7 @@ def main():
         global new_servo_angle
         open_palm_flag = 0 # to break from the main loop
         rapid_range_flag = 0 # to continue in the main loop
-        print("inside main")
+        ### print("inside main")
         pinch_recognized = False # flag, mainly not to have "pinch" printed infinite times
         pinch_up_detected = False
         prev_fingertip_y = float('inf') # setting initial val for fingertip's y coordinate to infinity (cuz the y grows from top to bottom)
@@ -240,7 +240,7 @@ def main():
         capture_config = camera.create_still_configuration()
         camera.configure(capture_config)
         camera.start()
-        print("aftter camera")
+        ### print("aftter camera")
 
         # Model load #############################################################
         mp_hands = mp.solutions.hands
@@ -321,7 +321,7 @@ def main():
                             mapped_value = map_number(fingertip_y, hand_range_start, hand_range_end, bottle_range_start, bottle_range_end)
                             mapped_value = round(mapped_value) # no float
                             move_stepper(mapped_value)
-                            print("fingertip_y", fingertip_y)
+                            ### print("fingertip_y", fingertip_y)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
 
@@ -330,9 +330,9 @@ def main():
 
 
 
-        print ("breeaked")
+        ### print ("breeaked")
         final_position = current_position
-        print("final position:", final_position)
+        ### print("final position:", final_position)
         move_stepper(0)
 
         # 2 minutes:
