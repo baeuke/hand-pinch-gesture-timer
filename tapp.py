@@ -65,6 +65,7 @@ hand_range_start = 1760 #default absolute values
 hand_range_end = 1100 #default absolute values
 #####RANGE SETUP END######
 
+new_servo_angle = 60
 
 ########################################################
 ########################################################
@@ -192,19 +193,20 @@ def timed_stepper(target_position):
 #########START TIMER COMPONENT##########################
 def set_timer(minutes):
     seconds = minutes * 60
-    new_servo_angle = 60
+    global new_servo_angle
+    temp = new_servo_angle
     while seconds:
         mins, secs = divmod(seconds, 60)
         timeformat = '{:02d}:{:02d}'.format(mins, secs)
         print(timeformat, end='\r')
         time.sleep(1)
         seconds -= 1
-        if new_servo_angle == 60:
-            set_servo_angle(60)
-            new_servo_angle = 61
+        if new_servo_angle == temp:
+            set_servo_angle(new_servo_angle)
+            new_servo_angle = new_servo_angle + 1
         else:
-            set_servo_angle(61)
-            new_servo_angle = 60
+            set_servo_angle(new_servo_angle + 1)
+            new_servo_angle = new_servo_angle - 1
 
         kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
 
@@ -332,32 +334,38 @@ def main():
 
         # 2 minutes:
         if 50 <= final_position <= 155:
-            set_servo_angle(50) #smaller blob
+            set_servo_angle(40) #smaller blob
+            new_servo_angle = 30 # the new angle after bigger blob comees back
             timed_stepper(105)
             set_timer(2)
         # 3 minutes:
         elif 155 < final_position <= 214:
-            set_servo_angle(50) #smaller blob
+            set_servo_angle(40) #smaller blob
+            new_servo_angle = 30
             timed_stepper(175)
             set_timer(3)
         # 5 minutes:
         elif 214 < final_position <= 260:
-            set_servo_angle(50) #smaller blob
+            set_servo_angle(40) #smaller blob
+            new_servo_angle = 30
             timed_stepper(215)
             set_timer(5)
         # 10 minutes:
         elif 260 < final_position <= 305:
             set_servo_angle(80)  # bigger blob
+            new_servo_angle = 60
             timed_stepper(280)
             set_timer(10)
         # 20 minutes:
         elif 305 < final_position <= 340:
             set_servo_angle(80)  # bigger blob
+            new_servo_angle = 60
             timed_stepper(320)
             set_timer(20)
         # 30 minutes:
         elif 340 < final_position <= 390:
             set_servo_angle(80)  # bigger blob
+            new_servo_angle = 60
             timed_stepper(375)
             set_timer(30)
 
