@@ -306,8 +306,8 @@ def main():
 
                             mapped_value = map_number(fingertip_y, hand_range_start, hand_range_end, bottle_range_start, bottle_range_end)
                             mapped_value = round(mapped_value) # no float
-                            # move_stepper(mapped_value)
-                            print("fingertip_y", fingertip_y)
+                            move_stepper(mapped_value)
+                            # print("fingertip_y", fingertip_y)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
 
