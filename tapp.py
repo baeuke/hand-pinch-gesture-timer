@@ -193,6 +193,7 @@ def timed_stepper(target_position):
 #########START TIMER COMPONENT##########################
 def set_timer(minutes):
     seconds = minutes * 60
+    global current_position
     global new_servo_angle
     temp = new_servo_angle
     while seconds:
@@ -209,6 +210,7 @@ def set_timer(minutes):
             new_servo_angle = new_servo_angle - 1
 
         kit.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
+        current_position = current_position - 1
 
     print("Time's up!")
 #########END TIMER COMPONENT####################
