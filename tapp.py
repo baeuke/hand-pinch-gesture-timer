@@ -309,7 +309,7 @@ def main():
                             break
 
                         # below, <=100 is needed to ignore rapid movement
-                        if abs(fingertip_y - prev_fingertip_y) >= 30: # if prev_fingertip_y is None or ... <- might be good just for additional check
+                        if abs(fingertip_y - prev_fingertip_y) >= 50: # if prev_fingertip_y is None or ... <- might be good just for additional check
                             # print("fingertip-y:", fingertip_y)
                             loop_counter = 1
 
