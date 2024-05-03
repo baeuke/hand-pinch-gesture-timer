@@ -217,6 +217,7 @@ def set_timer(minutes):
 
 def main():
     try:
+        global new_servo_angle
         open_palm_flag = 0 # to break from the main loop
         rapid_range_flag = 0 # to continue in the main loop
         print("inside main")
