@@ -348,7 +348,7 @@ def main():
         # 5 minutes:
         elif 214 < final_position <= 260:
             set_servo_angle(50) #smaller blob
-            new_servo_angle = 30
+            new_servo_angle = 40
             timed_stepper(250)
             set_timer(5)
         # 10 minutes:
