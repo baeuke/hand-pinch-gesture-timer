@@ -61,8 +61,8 @@ bottle_range_start = 0
 bottle_range_end = 390
 
 # hand range is basically camera's coordinate range which increases from top to bottom
-hand_range_start = 2200
-hand_range_end = 700
+hand_range_start = 2500
+hand_range_end = 800
 #####RANGE SETUP END######
 
 
