@@ -332,17 +332,17 @@ def main():
 
         # 2 minutes:
         if 50 <= final_position <= 155:
-            set_servo_angle(60) #smaller blob
+            set_servo_angle(50) #smaller blob
             timed_stepper(105)
             set_timer(2)
         # 3 minutes:
         elif 155 < final_position <= 214:
-            set_servo_angle(60) #smaller blob
+            set_servo_angle(50) #smaller blob
             timed_stepper(175)
             set_timer(3)
         # 5 minutes:
         elif 214 < final_position <= 260:
-            set_servo_angle(60) #smaller blob
+            set_servo_angle(50) #smaller blob
             timed_stepper(215)
             set_timer(5)
         # 10 minutes:
