@@ -341,12 +341,12 @@ def main():
             timed_stepper(175)
             set_timer(3)
         # 5 minutes:
-        elif 214 < final_position <= 260:
+        elif 214 < final_position <= 275:
             set_servo_angle(60) #smaller blob
             timed_stepper(215)
             set_timer(5)
         # 10 minutes:
-        elif 260 < final_position <= 305:
+        elif 275 < final_position <= 305:
             set_servo_angle(80)  # bigger blob
             timed_stepper(280)
             set_timer(10)
