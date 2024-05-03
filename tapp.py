@@ -77,8 +77,8 @@ def map_number(n, start1, stop1, start2, stop2):
 
 def set_hand_range(n):
     global hand_range_start, hand_range_end
-    hand_range_start = n - 350
-    hand_range_end = n + 600
+    hand_range_start = n + 350
+    hand_range_end = n - 600
 
 
 def get_args():
