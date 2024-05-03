@@ -61,8 +61,8 @@ bottle_range_start = 0
 bottle_range_end = 390
 
 # hand range is basically camera's coordinate range which increases from top to bottom
-hand_range_start = 1760
-hand_range_end = 1100
+hand_range_start = 1760 #default absolute values
+hand_range_end = 1100 #default absolute values
 #####RANGE SETUP END######
 
 
@@ -74,7 +74,7 @@ def map_number(n, start1, stop1, start2, stop2):
     return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
 
 
-
+# the function will set the hand range based on the initial position of the pinch
 def set_hand_range(n):
     global hand_range_start, hand_range_end
     hand_range_start = n + 350
@@ -329,36 +329,37 @@ def main():
         final_position = current_position
         print("final position:", final_position)
         move_stepper(0)
-        # 10 minutes:
-        if 248 < final_position <= 312:
-            set_servo_angle(80) #bigger blob
-            timed_stepper(280)
-            set_timer(10)
-        # 20 minutes:
-        elif 312 < final_position <= 355:
-            set_servo_angle(80) #bigger blob
-            timed_stepper(320)
-            set_timer(20)
-        # 30 minutes:
-        elif 355 < final_position <= 390:
-            set_servo_angle(80) #bigger blob
-            timed_stepper(375)
-            set_timer(30)
+
         # 2 minutes:
-        elif 100 <= final_position <= 170:
+        if 50 <= final_position <= 155:
             set_servo_angle(60) #smaller blob
             timed_stepper(105)
             set_timer(2)
         # 3 minutes:
-        elif 170 < final_position <= 210:
+        elif 155 < final_position <= 214:
             set_servo_angle(60) #smaller blob
             timed_stepper(175)
             set_timer(3)
         # 5 minutes:
-        elif 210 < final_position <= 248:
+        elif 214 < final_position <= 260:
             set_servo_angle(60) #smaller blob
             timed_stepper(215)
             set_timer(5)
+        # 10 minutes:
+        elif 260 < final_position <= 305:
+            set_servo_angle(80)  # bigger blob
+            timed_stepper(280)
+            set_timer(10)
+        # 20 minutes:
+        elif 305 < final_position <= 340:
+            set_servo_angle(80)  # bigger blob
+            timed_stepper(320)
+            set_timer(20)
+        # 30 minutes:
+        elif 340 < final_position <= 390:
+            set_servo_angle(80)  # bigger blob
+            timed_stepper(375)
+            set_timer(30)
 
 
     finally:
