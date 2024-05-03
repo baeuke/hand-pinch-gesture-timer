@@ -336,7 +336,7 @@ def main():
         # 2 minutes:
         if 50 <= final_position <= 155:
             set_servo_angle(40) #smaller blob
-            new_servo_angle = 30 # the new angle after bigger blob comees back
+            new_servo_angle = 20 # the new angle after bigger blob comees back
             timed_stepper(140)
             set_timer(2)
         # 3 minutes:
