@@ -61,8 +61,8 @@ bottle_range_start = 0
 bottle_range_end = 390
 
 # hand range is basically camera's coordinate range which increases from top to bottom
-hand_range_start = 2000 #deefault value
-hand_range_end = 600
+hand_range_start = 1760
+hand_range_end = 1100
 #####RANGE SETUP END######
 
 
@@ -74,6 +74,11 @@ def map_number(n, start1, stop1, start2, stop2):
     return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
 
 
+
+def set_hand_range(n):
+    global hand_range_start, hand_range_end
+    hand_range_start = n - 350
+    hand_range_end = n + 600
 
 
 def get_args():
@@ -282,7 +287,12 @@ def main():
                         print("\n")
                         print("Pinch Gesture Recognized!")
                         print("\n")
+                        set_hand_range(landmark_list[8][1])
                         pinch_recognized = True
+
+                    elif hand_sign_id != 0:
+                        pinch_recognized = False
+
 
                     if hand_sign_id == 2 and current_position > 50:
                         print("OPEN PALM")
@@ -290,9 +300,6 @@ def main():
                         open_palm_flag = 1
                         break
 
-
-                    elif hand_sign_id != 0:
-                        pinch_recognized = False
 
                     if hand_sign_id == 0 and pinch_recognized:
                         fingertip_y = landmark_list[8][1]
@@ -308,7 +315,7 @@ def main():
 
                             mapped_value = map_number(fingertip_y, hand_range_start, hand_range_end, bottle_range_start, bottle_range_end)
                             mapped_value = round(mapped_value) # no float
-                            # move_stepper(mapped_value)
+                            move_stepper(mapped_value)
                             print("fingertip_y", fingertip_y)
                             # print("mapped_val", mapped_value)
                             prev_fingertip_y = fingertip_y
