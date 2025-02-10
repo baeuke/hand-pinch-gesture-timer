@@ -14,3 +14,15 @@ sudo grep gpio /etc/group
 sudo chown root.gpio /dev/gpiomem
 sudo chmod g+rw /dev/gpiomem
 </pre>
+
+### other useful commands:
+<pre>
+scp pi@192.***.*.***:/home/pi/example.txt ~/Desktop/
+
+scp timer@timer:~/testoo.jpg ~/Documents
+</pre>
+
+### other useful resources:
+- https://pyimagesearch.com/2016/08/29/common-errors-using-the-raspberry-pi-camera-module/
+- https://pyimagesearch.com/2015/03/30/accessing-the-raspberry-pi-camera-with-opencv-and-python/
+
